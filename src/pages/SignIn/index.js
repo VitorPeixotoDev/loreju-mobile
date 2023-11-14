@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { View,
          Text,
          StyleSheet,
@@ -8,14 +8,28 @@ import { View,
         } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 
+import { AuthContext } from '../../contexts/AuthContext';
 import { globalStyles } from '../../styles'
 
 const SignIn = () => {
-    const [secure, setSecure] = useState(true)
+    const { user } = useContext(AuthContext)
 
-        const showSecure = () => {
-            return setSecure(!secure)
-        }
+    const [secure, setSecure] = useState(true)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const showSecure = () => {
+        return setSecure(!secure)
+    }
+
+    const handleLogin = () => {
+        if(email === '' || password === '') return 
+        console.log(`Email: ${email}`)
+
+        setEmail('')
+        setPassword('')
+    }
+
 
 
     return(
@@ -28,12 +42,18 @@ const SignIn = () => {
                 <TextInput
                     style={styles.input}
                     placeholder='digite seu email'
+                    autoCapitalize='none'
+                    value={email}
+                    onChangeText={setEmail}
                 />
                 <View style={styles.passwordContainer}>
                     <TextInput
                         style={[styles.input, {width: '85%'}]}
                         placeholder='digite sua senha'
+                        autoCapitalize='none'
                         secureTextEntry={secure}
+                        value={password}
+                        onChangeText={setPassword}
                     />
                     {secure ? (
                         <TouchableOpacity style={styles.secureView}
@@ -50,7 +70,10 @@ const SignIn = () => {
                         </TouchableOpacity>
                     )}
                 </View>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity 
+                    style={styles.button}
+                    onPress={handleLogin}
+                >
                     <Text style={styles.buttonText}>acessar</Text>
                 </TouchableOpacity>
             </View>
