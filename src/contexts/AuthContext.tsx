@@ -1,4 +1,9 @@
-import { useState, createContext, ReactNode } from "react"
+import { 
+    useState, 
+    createContext, 
+    ReactNode,
+    useEffect
+    } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import { api } from "../services/api"
@@ -6,6 +11,8 @@ import { api } from "../services/api"
 type AuthContextData = {
     user: UserProps
     isAuthenticated: boolean
+    loadingAuth: boolean
+    loading: boolean
     signIn: (credentials: SignInProps) => Promise<void>
 }
 
@@ -36,6 +43,7 @@ const AuthProvider = ({children}: AuthProviderProps) => {
     })
 
     const [loadingAuth, setLoadingAuth] = useState(false)
+    const [loading, setLoading] = useState(true)
     const isAuthenticated = !!user.name
 
     const signIn = async ({email, password}: SignInProps) => {
@@ -70,9 +78,29 @@ const AuthProvider = ({children}: AuthProviderProps) => {
 
     }
 
+    useEffect(() => {
+        const getUser = async () => {
+            const userInfo = await AsyncStorage.getItem('@loreju')
+            let hasUser: UserProps = JSON.parse(userInfo || '{}')
+            if(Object.keys(hasUser).length > 0){
+                api.defaults.headers.common['Authorization'] = `Bearer ${hasUser.token}`
+
+                setUser({
+                    id: hasUser.id,
+                    name: hasUser.name,
+                    email: hasUser.email,
+                    token: hasUser.token
+                })
+            }
+            setLoading(false)
+        }
+
+        getUser()
+    }, [])
+
 
     return(
-        <AuthContext.Provider value={{user, isAuthenticated, signIn}}>
+        <AuthContext.Provider value={{user, isAuthenticated, loadingAuth, loading, signIn}}>
             {children}
         </AuthContext.Provider>
     )
