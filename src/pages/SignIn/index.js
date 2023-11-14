@@ -12,7 +12,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { globalStyles } from '../../styles'
 
 const SignIn = () => {
-    const { user } = useContext(AuthContext)
+    const { signIn } = useContext(AuthContext)
 
     const [secure, setSecure] = useState(true)
     const [email, setEmail] = useState('')
@@ -22,9 +22,9 @@ const SignIn = () => {
         return setSecure(!secure)
     }
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if(email === '' || password === '') return 
-        console.log(`Email: ${email}`)
+        await signIn({email, password})
 
         setEmail('')
         setPassword('')
