@@ -14,6 +14,7 @@ type AuthContextData = {
     loadingAuth: boolean
     loading: boolean
     signIn: (credentials: SignInProps) => Promise<void>
+    signOut: () => Promise<void>
 }
 
 type UserProps = {
@@ -98,9 +99,28 @@ const AuthProvider = ({children}: AuthProviderProps) => {
         getUser()
     }, [])
 
+    const signOut = async () => {
+        await AsyncStorage
+            .clear()
+            .then(() => {
+                setUser({
+                    id: '',
+                    name: '',
+                    email: '',
+                    token: ''
+                })
+            })
+    }
 
     return(
-        <AuthContext.Provider value={{user, isAuthenticated, loadingAuth, loading, signIn}}>
+        <AuthContext.Provider value={{
+            user, 
+            isAuthenticated, 
+            loadingAuth, 
+            loading, 
+            signIn, 
+            signOut
+        }}>
             {children}
         </AuthContext.Provider>
     )

@@ -4,7 +4,8 @@ import { View,
          StyleSheet,
          Image,
          TextInput,
-         TouchableOpacity 
+         TouchableOpacity,
+         ActivityIndicator 
         } from 'react-native'
 import { Feather } from '@expo/vector-icons';
 
@@ -12,7 +13,7 @@ import { AuthContext } from '../../contexts/AuthContext';
 import { globalStyles } from '../../styles'
 
 const SignIn = () => {
-    const { signIn } = useContext(AuthContext)
+    const { signIn, loadingAuth } = useContext(AuthContext)
 
     const [secure, setSecure] = useState(true)
     const [email, setEmail] = useState('')
@@ -70,12 +71,23 @@ const SignIn = () => {
                         </TouchableOpacity>
                     )}
                 </View>
-                <TouchableOpacity 
-                    style={styles.button}
-                    onPress={handleLogin}
-                >
-                    <Text style={styles.buttonText}>acessar</Text>
-                </TouchableOpacity>
+                {loadingAuth ? (
+                    <TouchableOpacity 
+                        style={styles.button}
+                        onPress={handleLogin}
+                    >
+                        <ActivityIndicator color='#fff' size={20}/>
+                    </TouchableOpacity>
+                    ) 
+                    : (
+                        <TouchableOpacity 
+                            style={styles.button}
+                            onPress={handleLogin}
+                        >
+                            <Text style={styles.buttonText}>acessar</Text>
+                        </TouchableOpacity>
+                    )}
+
             </View>
         </View>
     )
