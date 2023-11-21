@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { View, 
          Text, 
          SafeAreaView, 
@@ -7,12 +7,24 @@ import { View,
          StyleSheet,
          Image 
         } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import { AuthContext } from '../../contexts/AuthContext'
+import { StackParamsList } from '../../routes/app.routes'
 import { globalStyles } from '../../styles'
 
 const Dashboard = () => {
     const { signOut } = useContext(AuthContext)
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>()
+    const [number, setNumber] = useState('')
+
+    const openOrder = async () => {
+        if(number === '') return
+
+        navigation.navigate('Order', {number, order_id: '72a8a213-f1e6-4717-aed5-785d986e6914'})
+
+    }
 
     return(
         <SafeAreaView style={styles.container}>
@@ -25,8 +37,13 @@ const Dashboard = () => {
                 style={styles.input}
                 placeholder='número da mesa'
                 keyboardType='numeric'
+                value={number}
+                onChangeText={setNumber}
             />
-            <TouchableOpacity style={styles.openTableBTN}>
+            <TouchableOpacity 
+                style={styles.openTableBTN}
+                onPress={openOrder}
+            >
                 <Text style={styles.textBTN}>abrir mesa</Text>
             </TouchableOpacity>
             <TouchableOpacity
