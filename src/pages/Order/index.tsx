@@ -1,5 +1,8 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { useRoute, RouteProp } from '@react-navigation/native'
+import { Feather } from '@expo/vector-icons'
+
+import { globalStyles } from '../../styles'
 
 type RouterDetaiParams = {
     Order: {
@@ -15,15 +18,75 @@ const Order = () => {
 
     return(
         <View style={styles.container}>
-            <Text>Tela de Order</Text>
-            <Text>{route.params.number}</Text>
-            <Text>{route.params.order_id}</Text>
+            <View style={styles.header}>
+                <Text style={styles.title}>Mesa: 5</Text>
+                <TouchableOpacity onPress={() => alert('OK TEST')}>
+                    <Feather name='trash-2' size={28} color={globalStyles['red']}/>
+                </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={styles.input}>
+                <Text style={{color: '#000'}}>Pizzas</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.input}>
+                <Text style={{color: '#000'}}>Pizza de calabresa</Text>
+            </TouchableOpacity>
+
+            <View style={styles.qtdContainer}>
+                <Text style={styles.qtdText}>Quantidade</Text>
+                <TextInput
+                    style={[styles.input, {width: '60%', textAlign: 'center'}]}
+                    placeholderTextColor='#000'
+                    keyboardType='numeric'
+                    value='1'
+                />
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {}
+    container: {
+        backgroundColor: globalStyles['dark-900'],
+        flex: 1,
+        paddingVertical: '5%',
+        paddingStart: '4%',
+        paddingEnd: '4%'
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 24,
+        marginBottom: 12
+
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: globalStyles['light-black'],
+        marginRight: 18
+
+    },
+    input: {
+        backgroundColor: globalStyles['dark-700'],
+        padding: 10,
+        borderRadius: 5,
+        width: '100%',
+        marginBottom: 12,
+        justifyContent: 'center',
+        paddingHorizontal: 8,
+        fontSize: 20
+    },
+    qtdContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    qtdText: {
+        fontSize: 20,
+        fontWeight: 'bold'
+    }
 })
 
 export default Order
