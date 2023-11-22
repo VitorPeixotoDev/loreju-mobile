@@ -38,7 +38,7 @@ const Order = () => {
     const [products, setProducts] = useState<ProductsProps[] | []>([])
     const [productSelected, setProductsSelected] = useState<ProductsProps | undefined>()
     const [modalCategoryViseble, setModalCategoryViseble] = useState(false)
-    const [modalProductViseble, setModalProductVisible] = useState(false)
+    const [modalProductViseble, setModalProductViseble] = useState(false)
 
     useEffect(() => {
         const loadInfo = async () => {
@@ -70,6 +70,10 @@ const Order = () => {
 
     const handleChangeCategory = (item: CategoryProps) => {
         setCategorySelected(item)
+    }
+
+    const handleChangeProduct = (item: ProductsProps) => {
+        setProductsSelected(item)
     }
 
     const handleCloseOrder = async () => {
@@ -106,7 +110,10 @@ const Order = () => {
             )}
 
             {products.length !== 0 && (
-                <TouchableOpacity style={styles.input}>
+                <TouchableOpacity 
+                    style={styles.input}
+                    onPress={() => setModalProductViseble(true)}
+                >
                     <Text style={{color: '#000'}}>{productSelected?.name}</Text>
                 </TouchableOpacity>
             )}
@@ -142,6 +149,18 @@ const Order = () => {
                     handleCloseModal={() => setModalCategoryViseble(false)}
                     options={category}
                     selectedItem={handleChangeCategory}
+                />
+            </Modal>
+
+            <Modal
+                transparent={true}
+                visible={modalProductViseble}
+                animationType='slide'
+            >
+                <ModalPicker
+                    handleCloseModal={() => setModalProductViseble(false)}
+                    options={products}
+                    selectedItem={handleChangeProduct}
                 />
             </Modal>
         </View>
