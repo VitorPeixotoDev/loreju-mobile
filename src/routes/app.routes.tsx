@@ -15,7 +15,7 @@ const { Navigator, Screen } = createNativeStackNavigator<StackParamsList>()
 
 const AppRoutes = () => {
     return(
-        <Navigator initialRouteName='Order'>
+        <Navigator>
             <Screen 
                 name='Dashboard' 
                 component={Dashboard}

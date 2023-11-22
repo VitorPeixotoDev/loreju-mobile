@@ -10,6 +10,7 @@ import { View,
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
+import { api } from '../../services/api'
 import { AuthContext } from '../../contexts/AuthContext'
 import { StackParamsList } from '../../routes/app.routes'
 import { globalStyles } from '../../styles'
@@ -22,8 +23,12 @@ const Dashboard = () => {
     const openOrder = async () => {
         if(number === '') return
 
-        navigation.navigate('Order', {number, order_id: '72a8a213-f1e6-4717-aed5-785d986e6914'})
+        const response = await api.post('/order', {
+            table: Number(number)
+        })
 
+        navigation.navigate('Order', {number, order_id: response.data.id})
+        setNumber('')
     }
 
     return(
