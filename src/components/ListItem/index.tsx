@@ -10,13 +10,19 @@ interface ItemProps {
         name: string
         amount: string | number
     }
+    deleteItem: (item_id: string) => void
 }
 
-const ListItem = ({data}: ItemProps) => {
+const ListItem = ({data, deleteItem}: ItemProps) => {
+
+    const handleDeleteItem = () => {
+        deleteItem(data.id)
+    }
+
     return(
         <View style={styles.container}>
             <Text style={styles.item}>{data?.amount} - {data?.name}</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleDeleteItem}>
                 <Feather name='trash-2' color={globalStyles['red']} size={24}/>
             </TouchableOpacity>
         </View>
