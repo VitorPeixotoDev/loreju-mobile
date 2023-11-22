@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
@@ -14,7 +15,26 @@ type RouterDetaiParams = {
 
 type OrderRouteProps = RouteProp<RouterDetaiParams, 'Order'>
 
+type CategoryProps = {
+    id: string
+    name: string
+}
+
 const Order = () => {
+    const [category, setCategory] = useState<CategoryProps[] | []>([])
+    const [categorySelected, setCategorySelected] = useState<CategoryProps>()
+    const [amount, setAmount] = useState('1')
+
+    useEffect(() => {
+        const loadInfo = async () => {
+            const response = await api.get('/category')
+            setCategory(response.data)
+            setCategorySelected(response.data[0])
+        }
+
+        loadInfo()
+    }, [])
+
     const route = useRoute<OrderRouteProps>()
     const navigation = useNavigation()
 
@@ -40,9 +60,13 @@ const Order = () => {
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.input}>
-                <Text style={{color: '#000'}}>Pizzas</Text>
-            </TouchableOpacity>
+            {category.length !== 0 && (
+                <TouchableOpacity style={styles.input}>
+                    <Text style={{color: '#000'}}>
+                        {categorySelected?.name}
+                    </Text>
+                </TouchableOpacity>
+            )}
 
             <TouchableOpacity style={styles.input}>
                 <Text style={{color: '#000'}}>Pizza de calabresa</Text>
@@ -54,7 +78,8 @@ const Order = () => {
                     style={[styles.input, {width: '60%', textAlign: 'center'}]}
                     placeholderTextColor='#000'
                     keyboardType='numeric'
-                    value='1'
+                    value={amount}
+                    onChangeText={setAmount}
                 />
             </View>
 
