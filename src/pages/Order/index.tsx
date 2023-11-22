@@ -42,6 +42,15 @@ const Order = () => {
                     value='1'
                 />
             </View>
+
+            <View style={styles.actions}>
+                <TouchableOpacity style={styles.btnAdd}>
+                    <Text style={styles.btnText}>+</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btn}>
+                    <Text style={styles.btnText}>avançar</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -56,7 +65,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'baseline',
         marginTop: 24,
         marginBottom: 12
 
@@ -86,6 +95,31 @@ const styles = StyleSheet.create({
     qtdText: {
         fontSize: 20,
         fontWeight: 'bold'
+    },
+    actions: {
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'space-between'
+    },
+    btnAdd: {
+        backgroundColor: globalStyles['wine'],
+        width: '20%',
+        height: 40,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    btnText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: globalStyles['dark-900']
+    },
+    btn: {
+        backgroundColor: globalStyles['green'],
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '75%'
     }
 })
 
