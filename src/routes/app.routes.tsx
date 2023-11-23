@@ -11,14 +11,17 @@ export type StackParamsList = {
         number: number | string
         order_id: string
     }
-    FinishOrder: undefined
+    FinishOrder: {
+        number: number | string
+        order_id: string
+    }
 }
 
 const { Navigator, Screen } = createNativeStackNavigator<StackParamsList>()
 
 const AppRoutes = () => {
     return(
-        <Navigator initialRouteName='FinishOrder'>
+        <Navigator>
             <Screen 
                 name='Dashboard' 
                 component={Dashboard}
