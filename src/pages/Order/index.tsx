@@ -7,18 +7,23 @@ import { View,
          Modal,
          FlatList } from 'react-native'
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { Feather } from '@expo/vector-icons'
 
 import { api } from '../../services/api'
+import { StackParamsList } from '../../routes/app.routes'
 import { globalStyles } from '../../styles'
 import ModalPicker from '../../components/ModalPicker'
 import ListItem from '../../components/ListItem'
+
+
 
 type RouterDetaiParams = {
     Order: {
         number: number | string
         order_id: string
     }
+    FishOrder: undefined
 }
 
 type OrderRouteProps = RouteProp<RouterDetaiParams, 'Order'>
@@ -78,7 +83,7 @@ const Order = () => {
     }, [categorySelected])
 
     const route = useRoute<OrderRouteProps>()
-    const navigation = useNavigation()
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>()
 
     const handleChangeCategory = (item: CategoryProps) => {
         setCategorySelected(item)
@@ -131,6 +136,10 @@ const Order = () => {
         })
 
         setItems(removeItem)
+    }
+
+    const handleFinishOrder = () => {
+        navigation.navigate('FinishOrder')
     }
 
     return(
@@ -188,6 +197,7 @@ const Order = () => {
                 <TouchableOpacity 
                     style={[styles.btn, {opacity: items.length === 0 ? .3 : 1}]}
                     disabled={items.length === 0}
+                    onPress={handleFinishOrder}
                 >
                     <Text style={styles.btnText}>avançar</Text>
                 </TouchableOpacity>
